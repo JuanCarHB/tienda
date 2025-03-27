@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda Online - Productos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1000px;
+            margin-top: 30px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .producto {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .producto:last-child {
+            border-bottom: none;
+        }
+
+        .producto h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #555;
+        }
+
+        .producto p {
+            margin: 0;
+            color: #777;
+        }
+
+        .precio {
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+        }
+
+        .button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #2980b9;
+        }
+
+        .resultados {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .productos-lista {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Lista de Productos</h1>
+
+    <div class="container">
+        <button class="button" onclick="filtrarYOrdenar()">Filtrar y Ordenar Productos</button>
+        
+        <div class="resultados" id="resultados">
+            <!-- Aquí se mostrarán los resultados -->
+        </div>
+
+        <div class="productos-lista" id="productosLista">
+            <!-- Aquí se mostrarán los productos -->
+        </div>
+    </div>
+
+    <script>
+        const productos = [
+            { nombre: "Camiseta", precio: 50, categoria: "Ropa" },
+            { nombre: "Pantalón", precio: 120, categoria: "Ropa" },
+            { nombre: "Zapatos", precio: 80, categoria: "Calzado" },
+            { nombre: "Sombrero", precio: 25, categoria: "Accesorios" },
+            { nombre: "Mochila", precio: 95, categoria: "Accesorios" }
+        ];
+
+        // Función para filtrar, ordenar y mostrar los productos
+        function filtrarYOrdenar() {
+            // Filtrar productos con precio menor a $100
+            const productosFiltrados = productos.filter(producto => producto.precio < 100);
+            mostrarProductosFiltrados(productosFiltrados);
+
+            // Ordenar alfabéticamente por nombre
+            const productosOrdenados = productosFiltrados.sort((a, b) => a.nombre.localeCompare(b.nombre));
+            mostrarProductosOrdenados(productosOrdenados);
+
+            // Obtener solo los nombres de los productos
+            const nombresProductos = productosOrdenados.map(producto => producto.nombre);
+            mostrarNombresProductos(nombresProductos);
+
+            // Calcular el precio total con reduce
+            const precioTotal = productosFiltrados.reduce((total, producto) => total + producto.precio, 0);
+            mostrarPrecioTotal(precioTotal);
+
+            // Verificar si hay productos de la categoría 'Accesorios' con some
+            const tieneAccesorios = productos.some(producto => producto.categoria === "Accesorios");
+            mostrarProductosDeAccesorios(tieneAccesorios);
+
+            // Verificar si todos los productos filtrados son de la categoría 'Ropa' con every
+            const todosRopa = productosFiltrados.every(producto => producto.categoria === "Ropa");
+            mostrarTodosSonRopa(todosRopa);
+        }
+
+        // Mostrar productos filtrados
+        function mostrarProductosFiltrados(productos) {
+            const lista = document.getElementById("productosLista");
+            lista.innerHTML = `<h2>Productos filtrados por precio menor a $100:</h2>`;
+            productos.forEach(producto => {
+                lista.innerHTML += `<div class="producto">
+                                        <h3>${producto.nombre}</h3>
+                                        <p>Precio: <span class="precio">$${producto.precio}</span></p>
+                                    </div>`;
+            });
+        }
+
+        // Mostrar productos ordenados alfabéticamente
+        function mostrarProductosOrdenados(productos) {
+            const lista = document.getElementById("productosLista");
+            lista.innerHTML += `<h2>Productos ordenados alfabéticamente:</h2>`;
+            productos.forEach(producto => {
+                lista.innerHTML += `<div class="producto">
+                                        <h3>${producto.nombre}</h3>
+                                        <p>Precio: <span class="precio">$${producto.precio}</span></p>
+                                    </div>`;
+            });
+        }
+
+        // Mostrar solo los nombres de los productos
+        function mostrarNombresProductos(nombres) {
+            const resultados = document.getElementById("resultados");
+            resultados.innerHTML += `<h2>Nombres de los productos:</h2><ul>`;
+            nombres.forEach(nombre => {
+                resultados.innerHTML += `<li>${nombre}</li>`;
+            });
+            resultados.innerHTML += `</ul>`;
+        }
+
+        // Mostrar precio total
+        function mostrarPrecioTotal(total) {
+            const resultados = document.getElementById("resultados");
+            resultados.innerHTML += `<p><strong>Precio total de los productos filtrados:</strong> $${total}</p>`;
+        }
+
+        // Mostrar si hay productos de accesorios
+        function mostrarProductosDeAccesorios(tiene) {
+            const resultados = document.getElementById("resultados");
+            resultados.innerHTML += `<p><strong>¿Hay productos de la categoría 'Accesorios'?</strong> ${tiene ? "Sí" : "No"}</p>`;
+        }
+
+        // Mostrar si todos los productos filtrados son de la categoría Ropa
+        function mostrarTodosSonRopa(todos) {
+            const resultados = document.getElementById("resultados");
+            resultados.innerHTML += `<p><strong>¿Todos los productos filtrados son de la categoría 'Ropa'?</strong> ${todos ? "Sí" : "No"}</p>`;
+        }
+    </script>
+
+</body>
+</html>

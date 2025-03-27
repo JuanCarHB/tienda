@@ -11,9 +11,5 @@ Este proyecto simula una tienda online con un listado de productos. Permite filt
 - **Verificar categorías**: Se verifica si existen productos de una categoría específica (como 'Accesorios').
 - **Mostrar resultados adicionales**: Se muestra información sobre los productos y categorías en la consola.
 
-## Estructura del Proyecto
 
-/index.html # Página principal con la interfaz de usuario 
-/style.css # Estilos para la página (incluidos en index.html) 
-/script.js # Lógica de JavaScript para manejar los productos 
 
